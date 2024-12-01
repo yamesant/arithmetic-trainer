@@ -1,45 +1,68 @@
 ﻿using ArithmeticTrainer.Models;
 using ArithmeticTrainer.Models.ProblemGenerators;
+using Spectre.Console;
 
 List<Attempt> history = [];
+const string startPractice = "Start practice";
+const string viewHistory = "View practice history";
+const string quit = "Quit";
+const string additionPractice = "Addition (+)";
+const string subtractionPractice = "Subtraction (-)";
+const string multiplicationPractice = "Multiplication (*)";
+const string divisionPractice = "Division (/)";
+const string mixedPractice = "All Together";
+const string cancel = "Cancel";
 
 while (true)
 {
     Console.WriteLine("Welcome to Arithmetic Trainer");
-    Console.WriteLine("Pick operation: +, -, *, / to start a new practice");
-    Console.WriteLine("Press a to start mixed practice");
-    Console.WriteLine("Press h to view practice history");
-    Console.WriteLine("Press q to quit");
-    string input = Console.ReadLine() ?? "";
-    switch (input)
+    string action = AnsiConsole.Prompt(
+        new SelectionPrompt<string>()
+            .Title("Select action: ")
+            .AddChoices(startPractice, viewHistory, quit));
+    switch (action)
     {
-        case "+":
-            DoPractice(new AdditionProblemGenerator());
+        case startPractice:
+            string practiceMode = AnsiConsole.Prompt(
+                new SelectionPrompt<string>()
+                    .Title("Pick practice mode: ")
+                    .AddChoices(
+                        additionPractice,
+                        subtractionPractice,
+                        multiplicationPractice,
+                        divisionPractice,
+                        mixedPractice,
+                        cancel));
+            switch (practiceMode)
+            {
+                case additionPractice:
+                    DoPractice(new AdditionProblemGenerator());
+                    break;
+                case subtractionPractice:
+                    DoPractice(new SubtractionProblemGenerator());
+                    break;
+                case multiplicationPractice:
+                    DoPractice(new MultiplicationProblemGenerator());
+                    break;
+                case divisionPractice:
+                    DoPractice(new DivisionProblemGenerator());
+                    break;
+                case mixedPractice:
+                    DoPractice(new MixedProblemGenerator(
+                        new AdditionProblemGenerator(),
+                        new SubtractionProblemGenerator(),
+                        new MultiplicationProblemGenerator(),
+                        new DivisionProblemGenerator()));
+                    break;
+                case cancel:
+                    continue;
+            }
             break;
-        case "-":
-            DoPractice(new SubtractionProblemGenerator());
-            break;
-        case "*":
-            DoPractice(new MultiplicationProblemGenerator());
-            break;
-        case "/":
-            DoPractice(new DivisionProblemGenerator());
-            break;
-        case "a":
-            DoPractice(new MixedProblemGenerator(
-                new AdditionProblemGenerator(),
-                new SubtractionProblemGenerator(),
-                new MultiplicationProblemGenerator(),
-                new DivisionProblemGenerator()));
-            break;
-        case "h":
+        case viewHistory:
             ShowHistory();
             break;
-        case "q":
+        case quit:
             return;
-        default:
-            Console.WriteLine("Unrecognised command");
-            break;
     }
 }
 
