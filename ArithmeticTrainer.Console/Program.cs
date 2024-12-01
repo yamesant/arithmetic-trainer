@@ -1,9 +1,12 @@
-﻿Random random = new();
+﻿List<string> history = [];
+Random random = new();
 
 while (true)
 {
     Console.WriteLine("Welcome to Arithmetic Trainer");
-    Console.WriteLine("Pick operation to practice: +, -, *, /");
+    Console.WriteLine("Pick operation: +, -, *, / to start a new practice");
+    Console.WriteLine("Press h to view practice history");
+    Console.WriteLine("Press q to quit");
     string input = Console.ReadLine() ?? "";
     switch (input)
     {
@@ -19,6 +22,11 @@ while (true)
         case "/":
             DoDivision();
             break;
+        case "h":
+            ShowHistory();
+            break;
+        case "q":
+            return;
         default:
             Console.WriteLine("Unrecognised operation");
             break;
@@ -39,14 +47,9 @@ void DoAddition()
         {
             break;
         }
-        if (input != result.ToString())
-        {
-            Console.WriteLine($"Wrong, the answer is {result}");
-        }
-        else
-        {
-            Console.WriteLine("Correct");
-        }
+        string outcome = input != result.ToString() ? $"Wrong, the answer is {result}" : "Correct";
+        Console.WriteLine(outcome);
+        history.Add($"{x} + {y} = ? Input: {input} Outcome: {outcome}");
     }
 }
 
@@ -64,14 +67,9 @@ void DoSubtraction()
         {
             break;
         }
-        if (input != result.ToString())
-        {
-            Console.WriteLine($"Wrong, the answer is {result}");
-        }
-        else
-        {
-            Console.WriteLine("Correct");
-        }
+        string outcome = input != result.ToString() ? $"Wrong, the answer is {result}" : "Correct";
+        Console.WriteLine(outcome);
+        history.Add($"{x} - {y} = ? Input: {input} Outcome: {outcome}");
     }
 }
 
@@ -110,14 +108,9 @@ void DoMultiplication()
         {
             break;
         }
-        if (input != result.ToString())
-        {
-            Console.WriteLine($"Wrong, the answer is {result}");
-        }
-        else
-        {
-            Console.WriteLine("Correct");
-        }
+        string outcome = input != result.ToString() ? $"Wrong, the answer is {result}" : "Correct";
+        Console.WriteLine(outcome);
+        history.Add($"{x} * {y} = ? Input: {input} Outcome: {outcome}");
     }
 }
 
@@ -135,13 +128,23 @@ void DoDivision()
         {
             break;
         }
-        if (input != result.ToString())
+        string outcome = input != result.ToString() ? $"Wrong, the answer is {result}" : "Correct";
+        Console.WriteLine(outcome);
+        history.Add($"{x} / {y} = ? Input: {input} Outcome: {outcome}");
+    }
+}
+
+void ShowHistory()
+{
+    if (history.Count == 0)
+    {
+        Console.WriteLine("No practice recorded yet");
+    }
+    else
+    {
+        foreach (string log in history)
         {
-            Console.WriteLine($"Wrong, the answer is {result}");
-        }
-        else
-        {
-            Console.WriteLine("Correct");
+            Console.WriteLine(log);
         }
     }
 }
