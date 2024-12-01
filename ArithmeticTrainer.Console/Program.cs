@@ -91,9 +91,18 @@ void ShowHistory()
     }
     else
     {
+        Table table = new()
+        {
+            Border = TableBorder.Square
+        };
+        table.AddColumn("Question");
+        table.AddColumn("Response");
+        table.AddColumn("Outcome");
         foreach (Attempt attempt in history)
         {
-            Console.WriteLine($"{attempt.Problem.Question} Response: {attempt.Response} Outcome: {attempt.Outcome}");
+            table.AddRow(attempt.Problem.Question, attempt.Response, attempt.Outcome);
         }
+
+        AnsiConsole.Write(table);
     }
 }
