@@ -7,6 +7,7 @@ while (true)
 {
     Console.WriteLine("Welcome to Arithmetic Trainer");
     Console.WriteLine("Pick operation: +, -, *, / to start a new practice");
+    Console.WriteLine("Press a to start mixed practice");
     Console.WriteLine("Press h to view practice history");
     Console.WriteLine("Press q to quit");
     string input = Console.ReadLine() ?? "";
@@ -23,6 +24,13 @@ while (true)
             break;
         case "/":
             DoPractice(new DivisionProblemGenerator());
+            break;
+        case "a":
+            DoPractice(new MixedProblemGenerator(
+                new AdditionProblemGenerator(),
+                new SubtractionProblemGenerator(),
+                new MultiplicationProblemGenerator(),
+                new DivisionProblemGenerator()));
             break;
         case "h":
             ShowHistory();
