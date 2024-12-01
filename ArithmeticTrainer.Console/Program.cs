@@ -1,4 +1,6 @@
-﻿List<string> history = [];
+﻿using ArithmeticTrainer.Models;
+
+List<Attempt> history = [];
 Random random = new();
 
 while (true)
@@ -41,15 +43,16 @@ void DoAddition()
         int result = random.Next(4, 100);
         int x = random.Next(2, result - 1);
         int y = result - x;
-        Console.WriteLine($"{x} + {y} = ?");
-        string input = Console.ReadLine() ?? "";
-        if (input == "q")
+        Problem problem = new($"{x} + {y} = ?", result.ToString());
+        Console.WriteLine(problem.Question);
+        string response = Console.ReadLine() ?? "";
+        if (response == "q")
         {
             break;
         }
-        string outcome = input != result.ToString() ? $"Wrong, the answer is {result}" : "Correct";
-        Console.WriteLine(outcome);
-        history.Add($"{x} + {y} = ? Input: {input} Outcome: {outcome}");
+        Attempt attempt = new(problem, response);
+        Console.WriteLine(attempt.Outcome);
+        history.Add(attempt);
     }
 }
 
@@ -61,15 +64,16 @@ void DoSubtraction()
         int result = random.Next(2, 98);
         int x = random.Next(result + 2, 100);
         int y = x - result;
-        Console.WriteLine($"{x} - {y} = ?");
-        string input = Console.ReadLine() ?? "";
-        if (input == "q")
+        Problem problem = new($"{x} - {y} = ?", result.ToString());
+        Console.WriteLine(problem.Question);
+        string response = Console.ReadLine() ?? "";
+        if (response == "q")
         {
             break;
         }
-        string outcome = input != result.ToString() ? $"Wrong, the answer is {result}" : "Correct";
-        Console.WriteLine(outcome);
-        history.Add($"{x} - {y} = ? Input: {input} Outcome: {outcome}");
+        Attempt attempt = new(problem, response);
+        Console.WriteLine(attempt.Outcome);
+        history.Add(attempt);
     }
 }
 
@@ -102,15 +106,16 @@ void DoMultiplication()
     while (true)
     {
         (int x, int y, int result) = GenerateMultiplicationTriple();
-        Console.WriteLine($"{x} * {y} = ?");
-        string input = Console.ReadLine() ?? "";
-        if (input == "q")
+        Problem problem = new($"{x} * {y} = ?", result.ToString());
+        Console.WriteLine(problem.Question);
+        string response = Console.ReadLine() ?? "";
+        if (response == "q")
         {
             break;
         }
-        string outcome = input != result.ToString() ? $"Wrong, the answer is {result}" : "Correct";
-        Console.WriteLine(outcome);
-        history.Add($"{x} * {y} = ? Input: {input} Outcome: {outcome}");
+        Attempt attempt = new(problem, response);
+        Console.WriteLine(attempt.Outcome);
+        history.Add(attempt);
     }
 }
 
@@ -122,15 +127,16 @@ void DoDivision()
         int result = random.Next(2, 50);
         int y = random.Next(2, 99 / result + 1);
         int x = result * y;
-        Console.WriteLine($"{x} / {y} = ?");
-        string input = Console.ReadLine() ?? "";
-        if (input == "q")
+        Problem problem = new($"{x} / {y} = ?", result.ToString());
+        Console.WriteLine(problem.Question);
+        string response = Console.ReadLine() ?? "";
+        if (response == "q")
         {
             break;
         }
-        string outcome = input != result.ToString() ? $"Wrong, the answer is {result}" : "Correct";
-        Console.WriteLine(outcome);
-        history.Add($"{x} / {y} = ? Input: {input} Outcome: {outcome}");
+        Attempt attempt = new(problem, response);
+        Console.WriteLine(attempt.Outcome);
+        history.Add(attempt);
     }
 }
 
@@ -142,9 +148,9 @@ void ShowHistory()
     }
     else
     {
-        foreach (string log in history)
+        foreach (Attempt attempt in history)
         {
-            Console.WriteLine(log);
+            Console.WriteLine($"{attempt.Problem.Question} Response: {attempt.Response} Outcome: {attempt.Outcome}");
         }
     }
 }
