@@ -2,17 +2,69 @@
 
 while (true)
 {
-    int result = random.Next(4, 100);
-    int x = random.Next(2, result - 1);
-    int y = result - x;
-    Console.WriteLine($"{x} + {y} = ?");
+    Console.WriteLine("Welcome to Arithmetic Trainer");
+    Console.WriteLine("Pick operation to practice: +, -");
     string input = Console.ReadLine() ?? "";
-    if (input != result.ToString())
+    switch (input)
     {
-        Console.WriteLine($"Wrong, the answer is {result}");
+        case "+":
+            DoAddition();
+            break;
+        case "-":
+            DoSubtraction();
+            break;
+        default:
+            Console.WriteLine("Unrecognised operation");
+            break;
     }
-    else
+}
+
+void DoAddition()
+{
+    Console.WriteLine("Starting addition practice. Press q to stop.");
+    while (true)
     {
-        Console.WriteLine("Correct");
+        int result = random.Next(4, 100);
+        int x = random.Next(2, result - 1);
+        int y = result - x;
+        Console.WriteLine($"{x} + {y} = ?");
+        string input = Console.ReadLine() ?? "";
+        if (input == "q")
+        {
+            break;
+        }
+        if (input != result.ToString())
+        {
+            Console.WriteLine($"Wrong, the answer is {result}");
+        }
+        else
+        {
+            Console.WriteLine("Correct");
+        }
+    }
+}
+
+void DoSubtraction()
+{
+    Console.WriteLine("Starting subtraction practice. Press q to stop.");
+    while (true)
+    {
+        int result = random.Next(2, 98);
+        int x = random.Next(result + 2, 100);
+        int y = x - result;
+        Console.WriteLine($"{x} - {y} = ?");
+        string input = Console.ReadLine() ?? "";
+        if (input == "q")
+        {
+            break;
+        }
+        if (input != result.ToString())
+        {
+            Console.WriteLine($"Wrong, the answer is {result}");
+        }
+        else
+        {
+            Console.WriteLine("Correct");
+        }
     }
 }
