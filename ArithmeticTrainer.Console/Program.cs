@@ -1,108 +1,65 @@
-﻿using ArithmeticTrainer.Models;
-using ArithmeticTrainer.Models.ProblemGenerators;
+﻿using ArithmeticTrainer.Console;
+using ArithmeticTrainer.Data;
+using ArithmeticTrainer.Models;
 using Spectre.Console;
 
-List<Attempt> history = [];
-const string startPractice = "Start practice";
-const string viewHistory = "View practice history";
+History history = new();
+DoFixedTimeTest doFixedTimeTest = new(history);
+DoFixedLengthTest doFixedLengthTest = new(history);
+DoPractice doPractice = new(history);
+ShowHistory showHistory = new(history);
+TrainingModeCatalogue trainingModeCatalogue = new();
+TimeLimitCatalogue timeLimitCatalogue = new();
+LengthLimitCatalogue lengthLimitCatalogue = new();
+ConfigureTrainingMode configureTrainingMode = new(trainingModeCatalogue);
+ConfigureTimeLimit configureTimeLimit = new(timeLimitCatalogue);
+ConfigureLengthLimit configureLengthLimit = new(lengthLimitCatalogue);
+
+const string startFixedTimeTest = "Start Fixed Time Test";
+const string startFixedLengthTest = "Start Fixed Length Test";
+const string startPractice = "Start Practice";
+const string viewHistory = "View Training History";
 const string quit = "Quit";
-const string additionPractice = "Addition (+)";
-const string subtractionPractice = "Subtraction (-)";
-const string multiplicationPractice = "Multiplication (*)";
-const string divisionPractice = "Division (/)";
-const string mixedPractice = "All Together";
-const string cancel = "Cancel";
 
 while (true)
 {
     Console.WriteLine("Welcome to Arithmetic Trainer");
     string action = AnsiConsole.Prompt(
         new SelectionPrompt<string>()
-            .Title("Select action: ")
-            .AddChoices(startPractice, viewHistory, quit));
+            .Title("Select Action: ")
+            .AddChoices(startFixedTimeTest, startFixedLengthTest, startPractice, viewHistory, quit));
+    TrainingMode? trainingMode;
     switch (action)
     {
-        case startPractice:
-            string practiceMode = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                    .Title("Pick practice mode: ")
-                    .AddChoices(
-                        additionPractice,
-                        subtractionPractice,
-                        multiplicationPractice,
-                        divisionPractice,
-                        mixedPractice,
-                        cancel));
-            switch (practiceMode)
+        case startFixedTimeTest:
+            trainingMode = configureTrainingMode.Execute();
+            if (trainingMode is null) break;
+            TimeLimit? timeLimit = configureTimeLimit.Execute();
+            if (timeLimit is null) break;
+            do
             {
-                case additionPractice:
-                    DoPractice(new AdditionProblemGenerator());
-                    break;
-                case subtractionPractice:
-                    DoPractice(new SubtractionProblemGenerator());
-                    break;
-                case multiplicationPractice:
-                    DoPractice(new MultiplicationProblemGenerator());
-                    break;
-                case divisionPractice:
-                    DoPractice(new DivisionProblemGenerator());
-                    break;
-                case mixedPractice:
-                    DoPractice(new MixedProblemGenerator(
-                        new AdditionProblemGenerator(),
-                        new SubtractionProblemGenerator(),
-                        new MultiplicationProblemGenerator(),
-                        new DivisionProblemGenerator()));
-                    break;
-                case cancel:
-                    continue;
-            }
+                doFixedTimeTest.Execute(trainingMode, timeLimit);
+            } while (AnsiConsole.Prompt(new ConfirmationPrompt("Try Again?")));
+            break;
+        case startFixedLengthTest:
+            trainingMode = configureTrainingMode.Execute();
+            if (trainingMode is null) break;
+            LengthLimit? lengthLimit = configureLengthLimit.Execute();
+            if (lengthLimit is null) break;
+            do
+            {
+                doFixedLengthTest.Execute(trainingMode, lengthLimit);
+            } while (AnsiConsole.Prompt(new ConfirmationPrompt("Try Again?")));
+            break;
+        case startPractice:
+            trainingMode = configureTrainingMode.Execute();
+            if (trainingMode is null) break;
+            doPractice.Execute(trainingMode);
             break;
         case viewHistory:
-            ShowHistory();
+            showHistory.Execute();
             break;
         case quit:
             return;
-    }
-}
-
-void DoPractice(ProblemGenerator problemGenerator)
-{
-    Console.WriteLine($"Starting practice on {problemGenerator.Description}. Press q to stop.");
-    foreach (Problem problem in problemGenerator.Generate())
-    {
-        Console.WriteLine(problem.Question);
-        string response = Console.ReadLine() ?? "";
-        if (response == "q")
-        {
-            break;
-        }
-        Attempt attempt = new(problem, response);
-        Console.WriteLine(attempt.Outcome);
-        history.Add(attempt);
-    }
-}
-
-void ShowHistory()
-{
-    if (history.Count == 0)
-    {
-        Console.WriteLine("No practice recorded yet");
-    }
-    else
-    {
-        Table table = new()
-        {
-            Border = TableBorder.Square
-        };
-        table.AddColumn("Question");
-        table.AddColumn("Response");
-        table.AddColumn("Outcome");
-        foreach (Attempt attempt in history)
-        {
-            table.AddRow(attempt.Problem.Question, attempt.Response, attempt.Outcome);
-        }
-
-        AnsiConsole.Write(table);
     }
 }

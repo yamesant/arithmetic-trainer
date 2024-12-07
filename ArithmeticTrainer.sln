@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArithmeticTrainer.Console",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArithmeticTrainer.Models", "ArithmeticTrainer.Models\ArithmeticTrainer.Models.csproj", "{A1F56F23-6AD2-4525-8984-B0E89EE9ACDB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ArithmeticTrainer.Data", "ArithmeticTrainer.Data\ArithmeticTrainer.Data.csproj", "{1E894AAD-67EC-4CB7-ACCB-39B6991BFB07}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{A1F56F23-6AD2-4525-8984-B0E89EE9ACDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1F56F23-6AD2-4525-8984-B0E89EE9ACDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1F56F23-6AD2-4525-8984-B0E89EE9ACDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E894AAD-67EC-4CB7-ACCB-39B6991BFB07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E894AAD-67EC-4CB7-ACCB-39B6991BFB07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E894AAD-67EC-4CB7-ACCB-39B6991BFB07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E894AAD-67EC-4CB7-ACCB-39B6991BFB07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

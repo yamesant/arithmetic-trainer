@@ -2,7 +2,6 @@ namespace ArithmeticTrainer.Models.ProblemGenerators;
 
 public sealed class DivisionProblemGenerator : ProblemGenerator
 {
-    public override string Description => "Division in range [2, 99]";
     public override Problem Next()
     {
         int result = Random.Next(2, 50);
