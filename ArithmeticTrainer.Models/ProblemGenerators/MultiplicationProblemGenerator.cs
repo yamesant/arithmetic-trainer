@@ -2,7 +2,6 @@ namespace ArithmeticTrainer.Models.ProblemGenerators;
 
 public sealed class MultiplicationProblemGenerator : ProblemGenerator
 {
-    public override string Description => "Multiplication in range [2, 99]";
     public override Problem Next()
     {
         while (true)

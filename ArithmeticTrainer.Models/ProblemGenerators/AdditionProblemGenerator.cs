@@ -2,8 +2,6 @@ namespace ArithmeticTrainer.Models.ProblemGenerators;
 
 public sealed class AdditionProblemGenerator : ProblemGenerator
 {
-    public override string Description => "Addition in range [2, 99]";
-
     public override Problem Next()
     {
         int result = Random.Next(4, 100);

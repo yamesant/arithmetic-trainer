@@ -1,16 +1,12 @@
-﻿using ArithmeticTrainer.Models;
-using ArithmeticTrainer.Models.ProblemGenerators;
+﻿using ArithmeticTrainer.Data;
+using ArithmeticTrainer.Models;
 using Spectre.Console;
 
 List<Attempt> history = [];
+TrainingModeCatalogue trainingModeCatalogue = new();
 const string startPractice = "Start practice";
 const string viewHistory = "View practice history";
 const string quit = "Quit";
-const string additionPractice = "Addition (+)";
-const string subtractionPractice = "Subtraction (-)";
-const string multiplicationPractice = "Multiplication (*)";
-const string divisionPractice = "Division (/)";
-const string mixedPractice = "All Together";
 const string cancel = "Cancel";
 
 while (true)
@@ -23,40 +19,9 @@ while (true)
     switch (action)
     {
         case startPractice:
-            string practiceMode = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                    .Title("Pick practice mode: ")
-                    .AddChoices(
-                        additionPractice,
-                        subtractionPractice,
-                        multiplicationPractice,
-                        divisionPractice,
-                        mixedPractice,
-                        cancel));
-            switch (practiceMode)
-            {
-                case additionPractice:
-                    DoPractice(new AdditionProblemGenerator());
-                    break;
-                case subtractionPractice:
-                    DoPractice(new SubtractionProblemGenerator());
-                    break;
-                case multiplicationPractice:
-                    DoPractice(new MultiplicationProblemGenerator());
-                    break;
-                case divisionPractice:
-                    DoPractice(new DivisionProblemGenerator());
-                    break;
-                case mixedPractice:
-                    DoPractice(new MixedProblemGenerator(
-                        new AdditionProblemGenerator(),
-                        new SubtractionProblemGenerator(),
-                        new MultiplicationProblemGenerator(),
-                        new DivisionProblemGenerator()));
-                    break;
-                case cancel:
-                    continue;
-            }
+            TrainingMode? trainingMode = ConfigureTrainingMode();
+            if (trainingMode is null) break;
+            DoPractice(trainingMode);
             break;
         case viewHistory:
             ShowHistory();
@@ -66,10 +31,10 @@ while (true)
     }
 }
 
-void DoPractice(ProblemGenerator problemGenerator)
+void DoPractice(TrainingMode trainingMode)
 {
-    Console.WriteLine($"Starting practice on {problemGenerator.Description}. Press q to stop.");
-    foreach (Problem problem in problemGenerator.Generate())
+    Console.WriteLine($"Starting practice on {trainingMode.Label}. Press q to stop.");
+    foreach (Problem problem in trainingMode.ProblemGenerator.Generate())
     {
         Console.WriteLine(problem.Question);
         string response = Console.ReadLine() ?? "";
@@ -104,5 +69,19 @@ void ShowHistory()
         }
 
         AnsiConsole.Write(table);
+    }
+}
+
+TrainingMode? ConfigureTrainingMode()
+{
+    {
+        List<string> labels = trainingModeCatalogue.GetLabels();
+        string selection = AnsiConsole.Prompt(
+            new SelectionPrompt<string>()
+                .Title("Pick Training Mode: ")
+                .AddChoices(labels)
+                .AddChoices(cancel)
+        );
+        return selection == cancel ? null : trainingModeCatalogue.GetByLabel(selection);
     }
 }
