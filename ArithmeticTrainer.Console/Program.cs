@@ -6,7 +6,9 @@ using Spectre.Console;
 List<Attempt> history = [];
 TrainingModeCatalogue trainingModeCatalogue = new();
 TimeLimitCatalogue timeLimitCatalogue = new();
+LengthLimitCatalogue lengthLimitCatalogue = new();
 const string startFixedTimeTest = "Start Fixed Time Test";
+const string startFixedLengthTest = "Start Fixed Length Test";
 const string startPractice = "Start Practice";
 const string viewHistory = "View Training History";
 const string quit = "Quit";
@@ -18,7 +20,7 @@ while (true)
     string action = AnsiConsole.Prompt(
         new SelectionPrompt<string>()
             .Title("Select action: ")
-            .AddChoices(startFixedTimeTest, startPractice, viewHistory, quit));
+            .AddChoices(startFixedTimeTest, startFixedLengthTest, startPractice, viewHistory, quit));
     TrainingMode? trainingMode;
     switch (action)
     {
@@ -30,6 +32,16 @@ while (true)
             do
             {
                 DoFixedTimeTest(trainingMode, timeLimit);
+            } while (AnsiConsole.Prompt(new ConfirmationPrompt("Try Again?")));
+            break;
+        case startFixedLengthTest:
+            trainingMode = ConfigureTrainingMode();
+            if (trainingMode is null) break;
+            LengthLimit? lengthLimit = ConfigureLengthLimit();
+            if (lengthLimit is null) break;
+            do
+            {
+                DoFixedLengthTest(trainingMode, lengthLimit);
             } while (AnsiConsole.Prompt(new ConfirmationPrompt("Try Again?")));
             break;
         case startPractice:
@@ -72,6 +84,37 @@ void DoFixedTimeTest(TrainingMode trainingMode, TimeLimit timeLimit)
     }
 
     history.AddRange(attempts);
+}
+
+void DoFixedLengthTest(TrainingMode trainingMode, LengthLimit lengthLimit)
+{
+    int incorrectResponsePenaltyInSeconds = 10;
+    AnsiConsole.WriteLine($"Starting {lengthLimit.Label} test on {trainingMode.Label}.");
+    List<Attempt> attempts = [];
+    Stopwatch stopwatch = Stopwatch.StartNew();
+    for (int i = 1; i <= lengthLimit.Value; i++)
+    {
+        Problem problem = trainingMode.ProblemGenerator.Next();
+        AnsiConsole.WriteLine(problem.Question);
+        string response = Console.ReadLine() ?? "";
+        Attempt attempt = new(problem, response);
+        AnsiConsole.WriteLine($"{attempt.Outcome}. Problems remaining: {lengthLimit.Value-i}");
+        attempts.Add(attempt);
+    }
+
+    TimeSpan elapsedTime = stopwatch.Elapsed;
+    int correctCount = attempts.Count(attempt => attempt.IsCorrect);
+    int incorrectCount = attempts.Count - correctCount;
+    TimeSpan penaltyTime = TimeSpan.FromSeconds(incorrectCount * incorrectResponsePenaltyInSeconds);
+    TimeSpan finishTime = elapsedTime + penaltyTime;
+    AnsiConsole.WriteLine($"Finish Time: {Format(finishTime)} (including {Format(penaltyTime)} penalty time)");
+
+    history.AddRange(attempts);
+    
+    string Format(TimeSpan timeSpan)
+    {
+        return timeSpan >= TimeSpan.FromHours(1) ? "Over 1 Hour" : timeSpan.ToString(@"mm\:ss");
+    }
 }
 
 void DoPractice(TrainingMode trainingMode)
@@ -141,4 +184,16 @@ TimeLimit? ConfigureTimeLimit()
             .AddChoices(cancel)
     );
     return selection == cancel ? null : timeLimitCatalogue.GetByLabel(selection);
+}
+
+LengthLimit? ConfigureLengthLimit()
+{
+    List<string> labels = lengthLimitCatalogue.GetLabels();
+    string selection = AnsiConsole.Prompt(
+        new SelectionPrompt<string>()
+            .Title("Pick Length Limit: ")
+            .AddChoices(labels)
+            .AddChoices(cancel)
+    );
+    return selection == cancel ? null : lengthLimitCatalogue.GetByLabel(selection);
 }
