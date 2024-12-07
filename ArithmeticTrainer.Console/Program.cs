@@ -27,7 +27,10 @@ while (true)
             if (trainingMode is null) break;
             TimeLimit? timeLimit = ConfigureTimeLimit();
             if (timeLimit is null) break;
-            DoFixedTimeTest(trainingMode, timeLimit);
+            do
+            {
+                DoFixedTimeTest(trainingMode, timeLimit);
+            } while (AnsiConsole.Prompt(new ConfirmationPrompt("Try Again?")));
             break;
         case startPractice:
             trainingMode = ConfigureTrainingMode();
