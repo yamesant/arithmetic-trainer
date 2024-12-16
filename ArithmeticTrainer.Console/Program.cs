@@ -8,10 +8,10 @@ DoFixedTimeTest doFixedTimeTest = new(history);
 DoFixedLengthTest doFixedLengthTest = new(history);
 DoPractice doPractice = new(history);
 ShowHistory showHistory = new(history);
-TrainingModeCatalogue trainingModeCatalogue = new();
+ProblemCollectionCatalogue problemCollectionCatalogue = new();
 TimeLimitCatalogue timeLimitCatalogue = new();
 LengthLimitCatalogue lengthLimitCatalogue = new();
-ConfigureTrainingMode configureTrainingMode = new(trainingModeCatalogue);
+ConfigureProblemCollection configureProblemCollection = new(problemCollectionCatalogue);
 ConfigureTimeLimit configureTimeLimit = new(timeLimitCatalogue);
 ConfigureLengthLimit configureLengthLimit = new(lengthLimitCatalogue);
 
@@ -28,33 +28,33 @@ while (true)
         new SelectionPrompt<string>()
             .Title("Select Action: ")
             .AddChoices(startFixedTimeTest, startFixedLengthTest, startPractice, viewHistory, quit));
-    TrainingMode? trainingMode;
+    ProblemCollection? problemCollection;
     switch (action)
     {
         case startFixedTimeTest:
-            trainingMode = configureTrainingMode.Execute();
-            if (trainingMode is null) break;
+            problemCollection = configureProblemCollection.Execute();
+            if (problemCollection is null) break;
             TimeLimit? timeLimit = configureTimeLimit.Execute();
             if (timeLimit is null) break;
             do
             {
-                doFixedTimeTest.Execute(trainingMode, timeLimit);
+                doFixedTimeTest.Execute(problemCollection, timeLimit);
             } while (AnsiConsole.Prompt(new ConfirmationPrompt("Try Again?")));
             break;
         case startFixedLengthTest:
-            trainingMode = configureTrainingMode.Execute();
-            if (trainingMode is null) break;
+            problemCollection = configureProblemCollection.Execute();
+            if (problemCollection is null) break;
             LengthLimit? lengthLimit = configureLengthLimit.Execute();
             if (lengthLimit is null) break;
             do
             {
-                doFixedLengthTest.Execute(trainingMode, lengthLimit);
+                doFixedLengthTest.Execute(problemCollection, lengthLimit);
             } while (AnsiConsole.Prompt(new ConfirmationPrompt("Try Again?")));
             break;
         case startPractice:
-            trainingMode = configureTrainingMode.Execute();
-            if (trainingMode is null) break;
-            doPractice.Execute(trainingMode);
+            problemCollection = configureProblemCollection.Execute();
+            if (problemCollection is null) break;
+            doPractice.Execute(problemCollection);
             break;
         case viewHistory:
             showHistory.Execute();
