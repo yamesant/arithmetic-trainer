@@ -21,7 +21,7 @@ public sealed class MultiplicationProblemGenerator : ProblemGenerator
             }
             int x = divisors[Random.Next(0, divisors.Count)];
             int y = product / x;
-            return new Problem($"{x} * {y} = ?", product.ToString());
+            return new GenericProblem($"{x} * {y} = ?", product.ToString());
         }
     }
 }

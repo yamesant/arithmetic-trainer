@@ -7,6 +7,6 @@ public sealed class AdditionProblemGenerator : ProblemGenerator
         int result = Random.Next(4, 100);
         int x = Random.Next(2, result - 1);
         int y = result - x;
-        return new Problem($"{x} + {y} = ?", result.ToString());
+        return new GenericProblem($"{x} + {y} = ?", result.ToString());
     }
 }

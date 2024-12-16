@@ -7,6 +7,6 @@ public sealed class SubtractionProblemGenerator : ProblemGenerator
         int result = Random.Next(2, 98);
         int x = Random.Next(result + 2, 100);
         int y = x - result; 
-        return new Problem($"{x} - {y} = ?", result.ToString());
+        return new GenericProblem($"{x} - {y} = ?", result.ToString());
     }
 }

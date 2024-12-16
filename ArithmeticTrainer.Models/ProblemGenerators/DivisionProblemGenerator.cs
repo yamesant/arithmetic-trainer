@@ -7,6 +7,6 @@ public sealed class DivisionProblemGenerator : ProblemGenerator
         int result = Random.Next(2, 50);
         int y = Random.Next(2, 99 / result + 1);
         int x = result * y;
-        return new Problem($"{x} / {y} = ?", result.ToString());
+        return new GenericProblem($"{x} / {y} = ?", result.ToString());
     }
 }
