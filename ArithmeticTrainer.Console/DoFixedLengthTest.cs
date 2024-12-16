@@ -9,14 +9,14 @@ public sealed class DoFixedLengthTest(History history)
 {
     private const int IncorrectResponsePenaltyInSeconds = 10;
     
-    public void Execute(TrainingMode trainingMode, LengthLimit lengthLimit)
+    public void Execute(ProblemCollection problemCollection, LengthLimit lengthLimit)
     {
-        AnsiConsole.WriteLine($"Starting {lengthLimit.Label} Test on {trainingMode.Label}.");
+        AnsiConsole.WriteLine($"Starting {lengthLimit.Label} Test on {problemCollection.Label}.");
         List<Attempt> attempts = [];
         Stopwatch stopwatch = Stopwatch.StartNew();
         for (int i = 1; i <= lengthLimit.Value; i++)
         {
-            Problem problem = trainingMode.ProblemGenerator.Next();
+            Problem problem = problemCollection.Next();
             AnsiConsole.WriteLine(problem.Question);
             string response = System.Console.ReadLine() ?? "";
             Attempt attempt = new(problem, response);

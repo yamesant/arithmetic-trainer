@@ -7,12 +7,12 @@ namespace ArithmeticTrainer.Console;
 
 public sealed class DoFixedTimeTest(History history)
 {
-    public void Execute(TrainingMode trainingMode, TimeLimit timeLimit)
+    public void Execute(ProblemCollection problemCollection, TimeLimit timeLimit)
     {
-        AnsiConsole.WriteLine($"Starting {timeLimit.Label} Test on {trainingMode.Label}.");
+        AnsiConsole.WriteLine($"Starting {timeLimit.Label} Test on {problemCollection.Label}.");
         List<Attempt> attempts = [];
         Stopwatch stopwatch = Stopwatch.StartNew();
-        foreach (Problem problem in trainingMode.ProblemGenerator.Generate())
+        foreach (Problem problem in problemCollection.Generate())
         {
             AnsiConsole.WriteLine(problem.Question);
             string response = System.Console.ReadLine() ?? "";

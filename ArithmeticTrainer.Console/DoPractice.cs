@@ -6,11 +6,11 @@ namespace ArithmeticTrainer.Console;
 
 public sealed class DoPractice(History history)
 {
-    public void Execute(TrainingMode trainingMode)
+    public void Execute(ProblemCollection problemCollection)
     {
-        AnsiConsole.WriteLine($"Starting Practice on {trainingMode.Label}. Press q to stop.");
+        AnsiConsole.WriteLine($"Starting Practice on {problemCollection.Label}. Press q to stop.");
         List<Attempt> attempts = [];
-        foreach (Problem problem in trainingMode.ProblemGenerator.Generate())
+        foreach (Problem problem in problemCollection.Generate())
         {
             AnsiConsole.WriteLine(problem.Question);
             string response = System.Console.ReadLine() ?? "";

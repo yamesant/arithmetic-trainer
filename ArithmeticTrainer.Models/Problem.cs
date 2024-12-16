@@ -1,3 +1,7 @@
 ﻿namespace ArithmeticTrainer.Models;
 
-public record Problem(string Question, string Answer);
+public abstract class Problem
+{
+    public abstract string Question { get; }
+    public abstract string Answer { get; }
+}
