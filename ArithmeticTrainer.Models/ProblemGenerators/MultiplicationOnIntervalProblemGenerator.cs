@@ -2,6 +2,7 @@ namespace ArithmeticTrainer.Models.ProblemGenerators;
 
 public sealed class MultiplicationOnIntervalProblemGenerator : ProblemGenerator
 {
+    protected override Interval Range { get; } = null!;
     public override Problem Next()
     {
         while (true)

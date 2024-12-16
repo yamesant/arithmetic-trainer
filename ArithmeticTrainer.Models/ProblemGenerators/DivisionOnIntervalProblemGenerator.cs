@@ -2,6 +2,7 @@ namespace ArithmeticTrainer.Models.ProblemGenerators;
 
 public sealed class DivisionOnIntervalProblemGenerator : ProblemGenerator
 {
+    protected override Interval Range { get; } = null!;
     public override Problem Next()
     {
         int result = Random.Next(2, 50);
