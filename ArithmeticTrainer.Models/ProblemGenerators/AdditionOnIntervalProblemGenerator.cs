@@ -1,7 +1,11 @@
 namespace ArithmeticTrainer.Models.ProblemGenerators;
 
-public sealed class AdditionProblemGenerator : ProblemGenerator
+public sealed class AdditionOnIntervalProblemGenerator : ProblemGenerator
 {
+    public AdditionOnIntervalProblemGenerator(Interval interval)
+    {
+        
+    }
     public override Problem Next()
     {
         int result = Random.Next(4, 100);

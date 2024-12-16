@@ -8,14 +8,14 @@ public sealed class TrainingModeCatalogue
     private readonly IReadOnlyList<TrainingMode> _items =
     [
         new("Mixed (+-/*) On Range 2 to 99", new MixedProblemGenerator(
-            new AdditionProblemGenerator(),
-            new SubtractionProblemGenerator(),
-            new MultiplicationProblemGenerator(),
-            new DivisionProblemGenerator())),
-        new("Addition (+) On Range 2 to 99", new AdditionProblemGenerator()),
-        new("Subtraction (-) On Range 2 to 99", new SubtractionProblemGenerator()),
-        new("Division (/) On Range 2 to 99", new DivisionProblemGenerator()),
-        new("Multiplication (*) On Range 2 to 99", new MultiplicationProblemGenerator()),
+            new AdditionOnIntervalProblemGenerator(new(from: 2, to: 99)),
+            new SubtractionOnIntervalProblemGenerator(),
+            new MultiplicationOnIntervalProblemGenerator(),
+            new DivisionOnIntervalProblemGenerator())),
+        new("Addition (+) On Range 2 to 99", new AdditionOnIntervalProblemGenerator(new(from: 2, to: 99))),
+        new("Subtraction (-) On Range 2 to 99", new SubtractionOnIntervalProblemGenerator()),
+        new("Division (/) On Range 2 to 99", new DivisionOnIntervalProblemGenerator()),
+        new("Multiplication (*) On Range 2 to 99", new MultiplicationOnIntervalProblemGenerator()),
     ];
     public List<string> GetLabels() => _items.Select(m => m.Label).ToList();
 

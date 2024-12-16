@@ -1,6 +1,6 @@
 namespace ArithmeticTrainer.Models.ProblemGenerators;
 
-public sealed class MultiplicationProblemGenerator : ProblemGenerator
+public sealed class MultiplicationOnIntervalProblemGenerator : ProblemGenerator
 {
     public override Problem Next()
     {
