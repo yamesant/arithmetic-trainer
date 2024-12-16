@@ -39,4 +39,22 @@ public class IntervalTests
         // Assert
         name.Should().Be(expectedName);
     }
+    
+    [Theory]
+    [InlineData(-2, 2, -3, false)]
+    [InlineData(-2, 2, -2, true)]
+    [InlineData(-2, 2, 0, true)]
+    [InlineData(-2, 2, 2, true)]
+    [InlineData(-2, 2, 3, false)]
+    public void Contains(int from, int to, int value, bool expected)
+    {
+        // Arrange
+        Interval interval = new(from, to);
+        
+        // Act
+        bool result = interval.Contains(value);
+
+        // Assert
+        result.Should().Be(expected);
+    }
 }

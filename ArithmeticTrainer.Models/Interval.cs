@@ -15,4 +15,18 @@ public sealed class Interval : Range
         From = from;
         To = to;
     }
+    
+    public override bool Contains(int value)
+    {
+        return From <= value && value <= To;
+    }
+
+    public void EnsureContains(int value, string valueName)
+    {
+        if (Contains(value))
+        {
+            return;
+        }
+        throw new ArgumentOutOfRangeException($"{valueName}={value} must be between {From} and {To}");
+    }
 }
