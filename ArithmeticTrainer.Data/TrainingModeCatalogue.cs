@@ -11,10 +11,10 @@ public sealed class TrainingModeCatalogue
             new AdditionOnIntervalProblemGenerator(new(from: 2, to: 99)),
             new SubtractionOnIntervalProblemGenerator(new(from: 2, to: 99)),
             new MultiplicationOnIntervalProblemGenerator(new(from: 2, to: 99)),
-            new DivisionOnIntervalProblemGenerator())),
+            new DivisionOnIntervalProblemGenerator(new(from: 2, to: 99)))),
         new("Addition (+) On Range 2 to 99", new AdditionOnIntervalProblemGenerator(new(from: 2, to: 99))),
         new("Subtraction (-) On Range 2 to 99", new SubtractionOnIntervalProblemGenerator(new(from: 2, to: 99))),
-        new("Division (/) On Range 2 to 99", new DivisionOnIntervalProblemGenerator()),
+        new("Division (/) On Range 2 to 99", new DivisionOnIntervalProblemGenerator(new(from: 2, to: 99))),
         new("Multiplication (*) On Range 2 to 99", new MultiplicationOnIntervalProblemGenerator(new(from: 2, to: 99))),
     ];
     public List<string> GetLabels() => _items.Select(m => m.Label).ToList();
